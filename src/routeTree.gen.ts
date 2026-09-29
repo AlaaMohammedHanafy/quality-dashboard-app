@@ -13,6 +13,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedFeedbackIndexRouteImport } from './routes/_authenticated/feedback.index'
+import { Route as AuthenticatedFeedbackNewRouteImport } from './routes/_authenticated/feedback.new'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -33,16 +35,32 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedFeedbackIndexRoute =
+  AuthenticatedFeedbackIndexRouteImport.update({
+    id: '/feedback/',
+    path: '/feedback/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedFeedbackNewRoute =
+  AuthenticatedFeedbackNewRouteImport.update({
+    id: '/feedback/new',
+    path: '/feedback/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/feedback/new': typeof AuthenticatedFeedbackNewRoute
+  '/feedback/': typeof AuthenticatedFeedbackIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/feedback/new': typeof AuthenticatedFeedbackNewRoute
+  '/feedback': typeof AuthenticatedFeedbackIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -50,14 +68,22 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/feedback/new': typeof AuthenticatedFeedbackNewRoute
+  '/_authenticated/feedback/': typeof AuthenticatedFeedbackIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/dashboard'
+  fullPaths: '/' | '/auth' | '/dashboard' | '/feedback/new' | '/feedback/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/dashboard'
+  to: '/' | '/auth' | '/dashboard' | '/feedback/new' | '/feedback'
   id:
-    '__root__' | '/' | '/_authenticated' | '/auth' | '/_authenticated/dashboard'
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/feedback/new'
+    | '/_authenticated/feedback/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -96,15 +122,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/feedback/': {
+      id: '/_authenticated/feedback/'
+      path: '/feedback'
+      fullPath: '/feedback/'
+      preLoaderRoute: typeof AuthenticatedFeedbackIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/feedback/new': {
+      id: '/_authenticated/feedback/new'
+      path: '/feedback/new'
+      fullPath: '/feedback/new'
+      preLoaderRoute: typeof AuthenticatedFeedbackNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedFeedbackNewRoute: typeof AuthenticatedFeedbackNewRoute
+  AuthenticatedFeedbackIndexRoute: typeof AuthenticatedFeedbackIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedFeedbackNewRoute: AuthenticatedFeedbackNewRoute,
+  AuthenticatedFeedbackIndexRoute: AuthenticatedFeedbackIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
