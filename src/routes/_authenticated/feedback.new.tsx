@@ -60,8 +60,8 @@ function NewFeedbackPage() {
   const settings = useQuery({ queryKey: ["settings"], queryFn: fetchSettings });
 
   const [tutorId, setTutorId] = useState("");
-  const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
-  const [slot, setSlot] = useState(SLOTS[0]);
+  const [date, setDate] = useState<string>(() => new Date().toISOString().slice(0, 10));
+  const [slot, setSlot] = useState<string>(SLOTS[0] ?? "Slot 1");
   const [sessionLink, setSessionLink] = useState("");
   const [uniform, setUniform] = useState<string>("compliant");
   const [notes, setNotes] = useState("");
@@ -105,8 +105,8 @@ function NewFeedbackPage() {
   }
 
   async function submit() {
-    if (!tutorId) return toast.error("Select a tutor first");
-    if (selected.length === 0) return toast.error("Select at least one feedback item");
+    if (!tutorId) { toast.error("Select a tutor first"); return; }
+    if (selected.length === 0) { toast.error("Select at least one feedback item"); return; }
     setBusy(true);
     try {
       const { data: sessionRow } = await supabase
