@@ -1,0 +1,212 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMemo, useRef, useState } from "react";
+import { Download, Trash2, Upload } from "lucide-react";
+import { toast } from "sonner";
+import { AppShell } from "@/components/AppShell";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+import { fetchProfiles } from "@/lib/data";
+import { downloadCsv } from "@/lib/quality";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+
+export const Route = createFileRoute("/_authenticated/tutors")({
+  head: () => ({
+    meta: [
+      { title: "My Tutors — Quality Dashboard" },
+      { name: "description", content: "View your assigned tutors and import tutor lists from a spreadsheet." },
+      { property: "og:title", content: "My Tutors — Quality Dashboard" },
+      { property: "og:description", content: "View your assigned tutors and import tutor lists from a spreadsheet." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
+  component: TutorsPage,
+});
+
+type RosterRow = {
+  id: string;
+  tutor_code: string | null;
+  full_name: string;
+  email: string | null;
+  mentor_name: string | null;
+  mentor_email: string | null;
+  created_by: string | null;
+};
+
+const HEADER_MAP: Record<string, keyof Omit<RosterRow, "id" | "created_by">> = {
+  "tutor id": "tutor_code", "tutor code": "tutor_code", id: "tutor_code", code: "tutor_code",
+  "tutor name": "full_name", name: "full_name", "full name": "full_name", tutor: "full_name",
+  "tutor email": "email", email: "email",
+  mentor: "mentor_name", "mentor name": "mentor_name", "assigned mentor": "mentor_name",
+  "mentor email": "mentor_email",
+};
+
+async function fetchRoster() {
+  const { data, error } = await supabase
+    .from("tutor_roster")
+    .select("id, tutor_code, full_name, email, mentor_name, mentor_email, created_by")
+    .order("full_name");
+  if (error) throw error;
+  return (data ?? []) as RosterRow[];
+}
+
+function keyOf(r: { tutor_code: string | null; email: string | null; full_name: string; mentor_email: string | null }) {
+  return `${(r.tutor_code || r.email || r.full_name).toLowerCase()}|${(r.mentor_email ?? "").toLowerCase()}`;
+}
+
+function TutorsPage() {
+  const { user, isStaff } = useAuth();
+  const qc = useQueryClient();
+  const roster = useQuery({ queryKey: ["roster"], queryFn: fetchRoster });
+  const profiles = useQuery({ queryKey: ["profiles"], queryFn: fetchProfiles });
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [busy, setBusy] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const rows = useMemo(() => {
+    const q = search.toLowerCase();
+    return (roster.data ?? []).filter((r) =>
+      [r.full_name, r.tutor_code, r.email, r.mentor_name].some((v) => v?.toLowerCase().includes(q)),
+    );
+  }, [roster.data, search]);
+
+  async function handleFile(file: File) {
+    setBusy(true);
+    try {
+      const XLSX = await import("xlsx");
+      const wb = XLSX.read(await file.arrayBuffer());
+      const sheetName = wb.SheetNames[0];
+      const sheet = sheetName ? wb.Sheets[sheetName] : undefined;
+      if (!sheet) throw new Error("The file has no sheets");
+      const raw = XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet, { defval: "" });
+      const people = profiles.data ?? [];
+      const existing = new Set((roster.data ?? []).map(keyOf));
+      const parsed = raw
+        .map((row) => {
+          const out: Record<string, string> = {};
+          for (const [h, v] of Object.entries(row)) {
+            const field = HEADER_MAP[h.trim().toLowerCase()];
+            if (field && String(v).trim()) out[field] = String(v).trim();
+          }
+          if (!out.mentor_email && out.mentor_name) {
+            const match = people.find((p) => p.full_name.toLowerCase() === out.mentor_name!.toLowerCase());
+            if (match?.email) out.mentor_email = match.email;
+          }
+          return {
+            tutor_code: out.tutor_code ?? null,
+            full_name: out.full_name ?? "",
+            email: out.email ?? null,
+            mentor_name: out.mentor_name ?? null,
+            mentor_email: out.mentor_email?.toLowerCase() ?? null,
+            created_by: user!.id,
+          };
+        })
+        .filter((r) => r.full_name);
+      const seen = new Set<string>();
+      const fresh = parsed.filter((r) => {
+        const k = keyOf(r);
+        if (existing.has(k) || seen.has(k)) return false;
+        seen.add(k);
+        return true;
+      });
+      if (parsed.length === 0) throw new Error("No tutor rows found. Include a 'Tutor Name' column.");
+      if (fresh.length > 0) {
+        const { error } = await supabase.from("tutor_roster").insert(fresh);
+        if (error) throw error;
+      }
+      toast.success(`Imported ${fresh.length} tutors (${parsed.length - fresh.length} already listed)`);
+      await qc.invalidateQueries({ queryKey: ["roster"] });
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Import failed");
+    } finally {
+      setBusy(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  }
+
+  async function remove(id: string) {
+    const { error } = await supabase.from("tutor_roster").delete().eq("id", id);
+    if (error) return void toast.error(error.message);
+    await qc.invalidateQueries({ queryKey: ["roster"] });
+  }
+
+  function template() {
+    downloadCsv("tutors-template.csv", [
+      { "Tutor ID": "T-001", "Tutor Name": "Sara Ahmed", "Tutor Email": "sara@example.com", "Mentor Name": "Omar Ali", "Mentor Email": "omar@example.com" },
+    ]);
+  }
+
+  return (
+    <AppShell title="My Tutors">
+      <div className="space-y-6">
+        <Card>
+          <CardHeader><CardTitle>Import tutors</CardTitle></CardHeader>
+          <CardContent className="space-y-3 text-sm text-muted-foreground">
+            <p>
+              Upload a CSV or Excel file with columns <b>Tutor ID</b>, <b>Tutor Name</b>, <b>Tutor Email</b>,{" "}
+              <b>Mentor Name</b> and <b>Mentor Email</b>. Each mentor only sees the tutors assigned to their email
+              {isStaff ? "; admins and team leaders see everyone." : "."}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <input
+                ref={fileRef}
+                type="file"
+                accept=".csv,.xlsx,.xls"
+                className="hidden"
+                onChange={(e) => { const f = e.target.files?.[0]; if (f) void handleFile(f); }}
+              />
+              <Button onClick={() => fileRef.current?.click()} disabled={busy}>
+                <Upload className="mr-1 size-4" />{busy ? "Importing…" : "Import spreadsheet"}
+              </Button>
+              <Button variant="outline" onClick={template}><Download className="mr-1 size-4" />Download template</Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between gap-3">
+            <CardTitle>Tutors ({rows.length})</CardTitle>
+            <Input placeholder="Search…" value={search} onChange={(e) => setSearch(e.target.value)} className="max-w-xs" />
+          </CardHeader>
+          <CardContent>
+            {roster.isLoading ? (
+              <p className="text-muted-foreground">Loading…</p>
+            ) : rows.length === 0 ? (
+              <p className="text-muted-foreground">No tutors yet. Import a spreadsheet to add them.</p>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Tutor ID</TableHead><TableHead>Name</TableHead><TableHead>Email</TableHead>
+                    <TableHead>Mentor</TableHead><TableHead />
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {rows.map((r) => (
+                    <TableRow key={r.id}>
+                      <TableCell>{r.tutor_code ?? "—"}</TableCell>
+                      <TableCell className="font-medium">{r.full_name}</TableCell>
+                      <TableCell>{r.email ?? "—"}</TableCell>
+                      <TableCell>{r.mentor_name ?? r.mentor_email ?? "—"}</TableCell>
+                      <TableCell className="text-right">
+                        {(isStaff || r.created_by === user?.id) && (
+                          <Button variant="ghost" size="icon" onClick={() => void remove(r.id)} aria-label="Remove tutor">
+                            <Trash2 className="size-4" />
+                          </Button>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    </AppShell>
+  );
+}

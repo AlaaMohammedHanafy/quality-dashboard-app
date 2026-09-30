@@ -12,7 +12,11 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedAnalyticsRouteImport } from './routes/_authenticated/analytics'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedSessionsRouteImport } from './routes/_authenticated/sessions'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedTutorsRouteImport } from './routes/_authenticated/tutors'
 import { Route as AuthenticatedFeedbackIndexRouteImport } from './routes/_authenticated/feedback.index'
 import { Route as AuthenticatedFeedbackIdRouteImport } from './routes/_authenticated/feedback.$id'
 import { Route as AuthenticatedFeedbackNewRouteImport } from './routes/_authenticated/feedback.new'
@@ -31,9 +35,29 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAnalyticsRoute = AuthenticatedAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSessionsRoute = AuthenticatedSessionsRouteImport.update({
+  id: '/sessions',
+  path: '/sessions',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedTutorsRoute = AuthenticatedTutorsRouteImport.update({
+  id: '/tutors',
+  path: '/tutors',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedFeedbackIndexRoute =
@@ -57,7 +81,11 @@ const AuthenticatedFeedbackNewRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/analytics': typeof AuthenticatedAnalyticsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/sessions': typeof AuthenticatedSessionsRoute
+  '/settings': typeof AuthenticatedSettingsRoute
+  '/tutors': typeof AuthenticatedTutorsRoute
   '/feedback/$id': typeof AuthenticatedFeedbackIdRoute
   '/feedback/new': typeof AuthenticatedFeedbackNewRoute
   '/feedback/': typeof AuthenticatedFeedbackIndexRoute
@@ -65,7 +93,11 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/analytics': typeof AuthenticatedAnalyticsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/sessions': typeof AuthenticatedSessionsRoute
+  '/settings': typeof AuthenticatedSettingsRoute
+  '/tutors': typeof AuthenticatedTutorsRoute
   '/feedback/$id': typeof AuthenticatedFeedbackIdRoute
   '/feedback/new': typeof AuthenticatedFeedbackNewRoute
   '/feedback': typeof AuthenticatedFeedbackIndexRoute
@@ -75,7 +107,11 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/_authenticated/analytics': typeof AuthenticatedAnalyticsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/sessions': typeof AuthenticatedSessionsRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
+  '/_authenticated/tutors': typeof AuthenticatedTutorsRoute
   '/_authenticated/feedback/$id': typeof AuthenticatedFeedbackIdRoute
   '/_authenticated/feedback/new': typeof AuthenticatedFeedbackNewRoute
   '/_authenticated/feedback/': typeof AuthenticatedFeedbackIndexRoute
@@ -85,7 +121,11 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/analytics'
     | '/dashboard'
+    | '/sessions'
+    | '/settings'
+    | '/tutors'
     | '/feedback/$id'
     | '/feedback/new'
     | '/feedback/'
@@ -93,7 +133,11 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/analytics'
     | '/dashboard'
+    | '/sessions'
+    | '/settings'
+    | '/tutors'
     | '/feedback/$id'
     | '/feedback/new'
     | '/feedback'
@@ -102,7 +146,11 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/_authenticated/analytics'
     | '/_authenticated/dashboard'
+    | '/_authenticated/sessions'
+    | '/_authenticated/settings'
+    | '/_authenticated/tutors'
     | '/_authenticated/feedback/$id'
     | '/_authenticated/feedback/new'
     | '/_authenticated/feedback/'
@@ -137,11 +185,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/analytics': {
+      id: '/_authenticated/analytics'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof AuthenticatedAnalyticsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/sessions': {
+      id: '/_authenticated/sessions'
+      path: '/sessions'
+      fullPath: '/sessions'
+      preLoaderRoute: typeof AuthenticatedSessionsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/tutors': {
+      id: '/_authenticated/tutors'
+      path: '/tutors'
+      fullPath: '/tutors'
+      preLoaderRoute: typeof AuthenticatedTutorsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/feedback/': {
@@ -169,14 +245,22 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAnalyticsRoute: typeof AuthenticatedAnalyticsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedSessionsRoute: typeof AuthenticatedSessionsRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+  AuthenticatedTutorsRoute: typeof AuthenticatedTutorsRoute
   AuthenticatedFeedbackIdRoute: typeof AuthenticatedFeedbackIdRoute
   AuthenticatedFeedbackNewRoute: typeof AuthenticatedFeedbackNewRoute
   AuthenticatedFeedbackIndexRoute: typeof AuthenticatedFeedbackIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAnalyticsRoute: AuthenticatedAnalyticsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedSessionsRoute: AuthenticatedSessionsRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedTutorsRoute: AuthenticatedTutorsRoute,
   AuthenticatedFeedbackIdRoute: AuthenticatedFeedbackIdRoute,
   AuthenticatedFeedbackNewRoute: AuthenticatedFeedbackNewRoute,
   AuthenticatedFeedbackIndexRoute: AuthenticatedFeedbackIndexRoute,
