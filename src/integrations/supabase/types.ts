@@ -268,6 +268,42 @@ export type Database = {
         }
         Relationships: []
       }
+      tutor_roster: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          email: string | null
+          full_name: string
+          id: string
+          mentor_email: string | null
+          mentor_name: string | null
+          notes: string | null
+          tutor_code: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          email?: string | null
+          full_name: string
+          id?: string
+          mentor_email?: string | null
+          mentor_name?: string | null
+          notes?: string | null
+          tutor_code?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          email?: string | null
+          full_name?: string
+          id?: string
+          mentor_email?: string | null
+          mentor_name?: string | null
+          notes?: string | null
+          tutor_code?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -306,6 +342,7 @@ export type Database = {
         Returns: boolean
       }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
+      my_email: { Args: never; Returns: string }
     }
     Enums: {
       app_role: "admin" | "team_leader" | "mentor" | "tutor"
