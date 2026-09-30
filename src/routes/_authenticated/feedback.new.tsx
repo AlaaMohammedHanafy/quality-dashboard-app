@@ -118,7 +118,7 @@ function NewFeedbackPage() {
             slot,
             session_link: sessionLink || null,
             status: "reviewed",
-            created_by: user?.id,
+            created_by: user?.id ?? null,
           },
           { onConflict: "tutor_id,session_date,slot" },
         )

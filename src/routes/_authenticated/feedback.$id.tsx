@@ -49,7 +49,7 @@ function ReportPage() {
   const row = feedback.data;
 
   return (
-    <AppShell>
+    <AppShell title="Feedback report">
       <div className="space-y-6">
         <Button asChild variant="ghost" size="sm">
           <Link to="/feedback"><ArrowLeft className="mr-1 h-4 w-4" />Back to feedback</Link>
