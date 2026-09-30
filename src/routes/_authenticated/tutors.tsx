@@ -87,7 +87,7 @@ function TutorsPage() {
       const existing = new Set((roster.data ?? []).map(keyOf));
       const parsed = raw
         .map((row) => {
-          const out: Record<string, string> = {};
+          const out: Partial<Record<"tutor_code" | "full_name" | "email" | "mentor_name" | "mentor_email", string>> = {};
           for (const [h, v] of Object.entries(row)) {
             const field = HEADER_MAP[h.trim().toLowerCase()];
             if (field && String(v).trim()) out[field] = String(v).trim();
