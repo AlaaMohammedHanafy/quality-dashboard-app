@@ -4,6 +4,7 @@ import { useMemo, useRef, useState } from "react";
 import { Download, Trash2, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/AppShell";
+import { AccountsPanel, HistoryPanel } from "@/components/TutorAdminPanels";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { fetchProfiles, fetchRoles } from "@/lib/data";
@@ -144,6 +145,7 @@ function TutorsPage() {
     if (error) return void toast.error(error.code === "23505" ? "This tutor is already assigned to that mentor" : error.message);
     toast.success(`Reassigned to ${m.full_name}`);
     await qc.invalidateQueries({ queryKey: ["roster"] });
+    await qc.invalidateQueries({ queryKey: ["roster-history"] });
   }
 
   async function remove(id: string) {
@@ -240,6 +242,8 @@ function TutorsPage() {
             )}
           </CardContent>
         </Card>
+        {isStaff && <AccountsPanel />}
+        {isStaff && <HistoryPanel />}
       </div>
     </AppShell>
   );
