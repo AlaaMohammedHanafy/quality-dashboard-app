@@ -268,6 +268,50 @@ export type Database = {
         }
         Relationships: []
       }
+      tutor_assignment_history: {
+        Row: {
+          changed_at: string
+          changed_by: string | null
+          id: string
+          new_mentor_email: string | null
+          new_mentor_name: string | null
+          previous_mentor_email: string | null
+          previous_mentor_name: string | null
+          roster_id: string
+          tutor_name: string
+        }
+        Insert: {
+          changed_at?: string
+          changed_by?: string | null
+          id?: string
+          new_mentor_email?: string | null
+          new_mentor_name?: string | null
+          previous_mentor_email?: string | null
+          previous_mentor_name?: string | null
+          roster_id: string
+          tutor_name: string
+        }
+        Update: {
+          changed_at?: string
+          changed_by?: string | null
+          id?: string
+          new_mentor_email?: string | null
+          new_mentor_name?: string | null
+          previous_mentor_email?: string | null
+          previous_mentor_name?: string | null
+          roster_id?: string
+          tutor_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tutor_assignment_history_roster_id_fkey"
+            columns: ["roster_id"]
+            isOneToOne: false
+            referencedRelation: "tutor_roster"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tutor_roster: {
         Row: {
           created_at: string
