@@ -34,6 +34,15 @@ function AuthPage() {
     if (!loading && session) void navigate({ to: "/dashboard", replace: true });
   }, [loading, session, navigate]);
 
+  async function forgotPassword() {
+    if (!email) { toast.error("Enter your email above first"); return; }
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    if (error) { toast.error(error.message); return; }
+    toast.success("Check your email for a password reset link.");
+  }
+
   async function signIn(event: React.FormEvent) {
     event.preventDefault();
     setBusy(true);
@@ -98,6 +107,9 @@ function AuthPage() {
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <Input id="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+                <button type="button" onClick={() => void forgotPassword()} className="text-sm text-primary underline-offset-2 hover:underline">
+                  Forgot password?
+                </button>
               </div>
               <Button className="w-full" disabled={busy} type="submit">
                 Sign in
