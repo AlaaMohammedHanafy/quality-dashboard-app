@@ -6,7 +6,8 @@ import { toast } from "sonner";
 import { AppShell } from "@/components/AppShell";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { fetchProfiles } from "@/lib/data";
+import { fetchProfiles, fetchRoles } from "@/lib/data";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { downloadCsv } from "@/lib/quality";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -63,6 +64,11 @@ function TutorsPage() {
   const qc = useQueryClient();
   const roster = useQuery({ queryKey: ["roster"], queryFn: fetchRoster });
   const profiles = useQuery({ queryKey: ["profiles"], queryFn: fetchProfiles });
+  const roles = useQuery({ queryKey: ["roles"], queryFn: fetchRoles, enabled: isStaff });
+  const mentors = useMemo(() => {
+    const ids = new Set((roles.data ?? []).filter((r) => r.role === "mentor").map((r) => r.user_id));
+    return (profiles.data ?? []).filter((p) => ids.has(p.id) && p.email);
+  }, [roles.data, profiles.data]);
   const fileRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
   const [search, setSearch] = useState("");
@@ -128,6 +134,18 @@ function TutorsPage() {
     }
   }
 
+  async function reassign(id: string, mentorId: string) {
+    const m = mentors.find((x) => x.id === mentorId);
+    if (!m) return;
+    const { error } = await supabase
+      .from("tutor_roster")
+      .update({ mentor_name: m.full_name, mentor_email: m.email!.toLowerCase() })
+      .eq("id", id);
+    if (error) return void toast.error(error.code === "23505" ? "This tutor is already assigned to that mentor" : error.message);
+    toast.success(`Reassigned to ${m.full_name}`);
+    await qc.invalidateQueries({ queryKey: ["roster"] });
+  }
+
   async function remove(id: string) {
     const { error } = await supabase.from("tutor_roster").delete().eq("id", id);
     if (error) return void toast.error(error.message);
@@ -191,7 +209,23 @@ function TutorsPage() {
                       <TableCell>{r.tutor_code ?? "—"}</TableCell>
                       <TableCell className="font-medium">{r.full_name}</TableCell>
                       <TableCell>{r.email ?? "—"}</TableCell>
-                      <TableCell>{r.mentor_name ?? r.mentor_email ?? "—"}</TableCell>
+                      <TableCell>
+                        {isStaff ? (
+                          <Select
+                            value={mentors.find((m) => m.email!.toLowerCase() === r.mentor_email)?.id ?? ""}
+                            onValueChange={(v) => void reassign(r.id, v)}
+                          >
+                            <SelectTrigger className="h-8 w-48" aria-label={`Mentor for ${r.full_name}`}>
+                              <SelectValue placeholder={r.mentor_name ?? r.mentor_email ?? "Assign mentor"} />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {mentors.length === 0 ? (
+                                <div className="px-2 py-1.5 text-sm text-muted-foreground">No mentor accounts yet</div>
+                              ) : mentors.map((m) => <SelectItem key={m.id} value={m.id}>{m.full_name || m.email}</SelectItem>)}
+                            </SelectContent>
+                          </Select>
+                        ) : (r.mentor_name ?? r.mentor_email ?? "—")}
+                      </TableCell>
                       <TableCell className="text-right">
                         {(isStaff || r.created_by === user?.id) && (
                           <Button variant="ghost" size="icon" onClick={() => void remove(r.id)} aria-label="Remove tutor">
