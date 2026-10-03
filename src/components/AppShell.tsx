@@ -16,6 +16,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { AlertsBell } from "@/components/AlertsBell";
 
 type NavItem = { to: string; label: string; icon: typeof Users; show: (ctx: Ctx) => boolean };
 type Ctx = { isStaff: boolean; isMentor: boolean; isAdmin: boolean };
@@ -96,9 +97,12 @@ export function AppShell({ title, children }: { title: string; children: ReactNo
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex items-center justify-between border-b bg-card px-4 py-4 md:px-8">
           <h1 className="text-lg font-bold tracking-tight md:text-xl">{title}</h1>
-          <Button variant="outline" size="sm" className="md:hidden" onClick={signOut}>
-            <LogOut className="size-4" />
-          </Button>
+          <div className="flex items-center gap-2">
+            <AlertsBell />
+            <Button variant="outline" size="sm" className="md:hidden" onClick={signOut}>
+              <LogOut className="size-4" />
+            </Button>
+          </div>
         </header>
         <div className="flex gap-1 overflow-x-auto border-b bg-card px-2 py-2 md:hidden">
           {NAV.filter((item) => item.show(ctx)).map((item) => (
