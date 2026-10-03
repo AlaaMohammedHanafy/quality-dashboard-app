@@ -32,6 +32,48 @@ export type Database = {
         }
         Relationships: []
       }
+      coaching_plans: {
+        Row: {
+          actions: Json
+          baseline_date: string | null
+          baseline_streak: number
+          category: string
+          created_at: string
+          created_by: string
+          id: string
+          status: string
+          summary: string
+          tutor_id: string
+          updated_at: string
+        }
+        Insert: {
+          actions?: Json
+          baseline_date?: string | null
+          baseline_streak?: number
+          category: string
+          created_at?: string
+          created_by: string
+          id?: string
+          status?: string
+          summary?: string
+          tutor_id: string
+          updated_at?: string
+        }
+        Update: {
+          actions?: Json
+          baseline_date?: string | null
+          baseline_streak?: number
+          category?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          status?: string
+          summary?: string
+          tutor_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       comment_library: {
         Row: {
           active: boolean
