@@ -1,0 +1,2 @@
+ALTER TABLE public.tutor_roster ADD CONSTRAINT tutor_roster_code_format CHECK (tutor_code IS NULL OR tutor_code ~ '^T-[0-9]{3,}$') NOT VALID;
+ALTER TABLE public.profiles ADD CONSTRAINT profiles_tutor_code_format CHECK (tutor_code IS NULL OR tutor_code ~ '^T-[0-9]{3,}$') NOT VALID;

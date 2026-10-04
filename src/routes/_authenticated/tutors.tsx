@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useRef, useState } from "react";
-import { Download, Trash2, Upload } from "lucide-react";
+import { Download, Pencil, Plus, Trash2, Upload } from "lucide-react";
+import { normalizeTutorCode } from "@/lib/tutorCode";
+import { TutorFormDialog } from "@/components/TutorFormDialog";
 import { toast } from "sonner";
 import { AppShell } from "@/components/AppShell";
 import { AccountsPanel, HistoryPanel } from "@/components/TutorAdminPanels";
@@ -54,13 +56,6 @@ async function fetchRoster() {
     .order("full_name");
   if (error) throw error;
   return (data ?? []) as RosterRow[];
-}
-
-/** Tutor IDs look like T-2232. Accepts "t2232", "T 2232", "2232"; returns null if invalid. */
-export function normalizeTutorCode(raw: string | undefined): string | null | undefined {
-  if (!raw) return undefined;
-  const m = raw.trim().match(/^(?:t\s*-?\s*)?(\d{3,})$/i);
-  return m ? `T-${m[1]}` : null;
 }
 
 function keyOf(r: { tutor_code: string | null; email: string | null; full_name: string; mentor_email: string | null }) {
@@ -202,7 +197,14 @@ function TutorsPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between gap-3">
             <CardTitle>Tutors ({rows.length})</CardTitle>
+            <div className="flex items-center gap-2">
+            <TutorFormDialog
+              userId={user?.id ?? ""}
+              onSaved={() => qc.invalidateQueries({ queryKey: ["roster"] })}
+              trigger={<Button size="sm"><Plus className="mr-1 size-4" />Add tutor</Button>}
+            />
             <Input placeholder="Search…" value={search} onChange={(e) => setSearch(e.target.value)} className="max-w-xs" />
+            </div>
           </CardHeader>
           <CardContent>
             {roster.isLoading ? (
@@ -241,6 +243,14 @@ function TutorsPage() {
                         ) : (r.mentor_name ?? r.mentor_email ?? "—")}
                       </TableCell>
                       <TableCell className="text-right">
+                        {(isStaff || r.created_by === user?.id) && (
+                          <TutorFormDialog
+                            initial={r}
+                            userId={user?.id ?? ""}
+                            onSaved={() => qc.invalidateQueries({ queryKey: ["roster"] })}
+                            trigger={<Button variant="ghost" size="icon" aria-label={`Edit ${r.full_name}`}><Pencil className="size-4" /></Button>}
+                          />
+                        )}
                         {(isStaff || r.created_by === user?.id) && (
                           <Button variant="ghost" size="icon" onClick={() => void remove(r.id)} aria-label="Remove tutor">
                             <Trash2 className="size-4" />
