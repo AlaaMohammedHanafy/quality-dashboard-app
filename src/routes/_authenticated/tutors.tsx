@@ -56,6 +56,13 @@ async function fetchRoster() {
   return (data ?? []) as RosterRow[];
 }
 
+/** Tutor IDs look like T-2232. Accepts "t2232", "T 2232", "2232"; returns null if invalid. */
+export function normalizeTutorCode(raw: string | undefined): string | null | undefined {
+  if (!raw) return undefined;
+  const m = raw.trim().match(/^(?:t\s*-?\s*)?(\d{3,})$/i);
+  return m ? `T-${m[1]}` : null;
+}
+
 function keyOf(r: { tutor_code: string | null; email: string | null; full_name: string; mentor_email: string | null }) {
   return `${(r.tutor_code || r.email || r.full_name).toLowerCase()}|${(r.mentor_email ?? "").toLowerCase()}`;
 }
@@ -92,6 +99,7 @@ function TutorsPage() {
       const raw = XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet, { defval: "" });
       const people = profiles.data ?? [];
       const existing = new Set((roster.data ?? []).map(keyOf));
+      const badCodes: string[] = [];
       const parsed = raw
         .map((row) => {
           const out: Partial<Record<"tutor_code" | "full_name" | "email" | "mentor_name" | "mentor_email", string>> = {};
@@ -103,8 +111,10 @@ function TutorsPage() {
             const match = people.find((p) => p.full_name.toLowerCase() === out.mentor_name!.toLowerCase());
             if (match?.email) out.mentor_email = match.email;
           }
+          const code = normalizeTutorCode(out.tutor_code);
+          if (code === null) badCodes.push(out.tutor_code!);
           return {
-            tutor_code: out.tutor_code ?? null,
+            tutor_code: code ?? null,
             full_name: out.full_name ?? "",
             email: out.email ?? null,
             mentor_name: out.mentor_name ?? null,
@@ -113,6 +123,8 @@ function TutorsPage() {
           };
         })
         .filter((r) => r.full_name);
+      if (badCodes.length > 0)
+        throw new Error(`Invalid Tutor ID(s): ${badCodes.slice(0, 5).join(", ")}. Use the format T-2232.`);
       const seen = new Set<string>();
       const fresh = parsed.filter((r) => {
         const k = keyOf(r);
@@ -156,7 +168,7 @@ function TutorsPage() {
 
   function template() {
     downloadCsv("tutors-template.csv", [
-      { "Tutor ID": "T-001", "Tutor Name": "Sara Ahmed", "Tutor Email": "sara@example.com", "Mentor Name": "Omar Ali", "Mentor Email": "omar@example.com" },
+      { "Tutor ID": "T-2232", "Tutor Name": "Sara Ahmed", "Tutor Email": "sara@example.com", "Mentor Name": "Omar Ali", "Mentor Email": "omar@example.com" },
     ]);
   }
 
