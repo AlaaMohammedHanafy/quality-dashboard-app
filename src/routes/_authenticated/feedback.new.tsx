@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { AppShell } from "@/components/AppShell";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { normalizeTutorCode } from "@/lib/tutorCode";
 import {
   fetchAssignments,
   fetchLibrary,
@@ -60,6 +61,9 @@ function NewFeedbackPage() {
   const settings = useQuery({ queryKey: ["settings"], queryFn: fetchSettings });
 
   const [tutorId, setTutorId] = useState("");
+  const [tutorText, setTutorText] = useState("");
+  const labelOf = (t: { full_name: string; tutor_code: string | null }) =>
+    t.tutor_code ? `${t.tutor_code} — ${t.full_name}` : t.full_name;
   const [date, setDate] = useState<string>(() => new Date().toISOString().slice(0, 10));
   const [slot, setSlot] = useState<string>(SLOTS[0] ?? "Slot 1");
   const [sessionLink, setSessionLink] = useState("");
@@ -195,20 +199,34 @@ function NewFeedbackPage() {
             </CardHeader>
             <CardContent className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label>Tutor</Label>
-                <Select value={tutorId} onValueChange={setTutorId}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a tutor" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {tutorOptions.map((tutor) => (
-                      <SelectItem key={tutor.id} value={tutor.id}>
-                        {tutor.full_name}
-                        {tutor.tutor_code ? ` (${tutor.tutor_code})` : ""}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Label>Tutor (type ID or name)</Label>
+                <Input
+                  list="tutor-options"
+                  placeholder="e.g. T-2232 or tutor name"
+                  value={tutorText}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    setTutorText(v);
+                    const q = v.trim().toLowerCase();
+                    const code = normalizeTutorCode(v);
+                    const match = tutorOptions.find(
+                      (t) =>
+                        (code && t.tutor_code === code) ||
+                        t.tutor_code?.toLowerCase() === q ||
+                        t.full_name.toLowerCase() === q ||
+                        labelOf(t).toLowerCase() === q,
+                    );
+                    setTutorId(match?.id ?? "");
+                  }}
+                />
+                <datalist id="tutor-options">
+                  {tutorOptions.map((tutor) => (
+                    <option key={tutor.id} value={labelOf(tutor)} />
+                  ))}
+                </datalist>
+                {tutorText && !tutorId ? (
+                  <p className="text-xs text-destructive">No matching tutor found.</p>
+                ) : null}
                 {tutorOptions.length === 0 ? (
                   <p className="text-xs text-muted-foreground">
                     No tutors assigned to you yet. An admin can assign tutors in Settings.

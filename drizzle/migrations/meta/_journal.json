@@ -36,6 +36,13 @@
       "when": 1791124348780,
       "tag": "0004_tutor_code_format",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1791189046863,
+      "tag": "0005_tighten_read_access",
+      "breakpoints": true
     }
   ]
 }
