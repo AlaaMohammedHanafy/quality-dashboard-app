@@ -10,6 +10,7 @@ import {
   LogOut,
   PlusCircle,
   Settings,
+  Sparkles,
   Users,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -28,6 +29,7 @@ const NAV: NavItem[] = [
   { to: "/feedback/new", label: "New Feedback", icon: PlusCircle, show: (c) => c.isMentor || c.isStaff },
   { to: "/feedback", label: "Feedback", icon: FileText, show: () => true },
   { to: "/analytics", label: "Analytics", icon: BarChart3, show: (c) => c.isMentor || c.isStaff },
+  { to: "/insights", label: "AI Insights", icon: Sparkles, show: (c) => c.isMentor || c.isStaff },
   { to: "/settings", label: "Settings", icon: Settings, show: (c) => c.isAdmin },
 ];
 
