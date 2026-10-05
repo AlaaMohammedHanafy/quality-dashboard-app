@@ -9,6 +9,11 @@ export type TutorInsights = {
   discussion_points: string[];
 };
 
+const norm = (a: unknown) =>
+  (Array.isArray(a) ? a : []).slice(0, 5).map((x) =>
+    typeof x === "string" ? { theme: x, evidence: "" } : { theme: String(x?.theme ?? ""), evidence: String(x?.evidence ?? "") },
+  );
+
 const RUN_ID = "X-Lovable-AIG-Run-ID";
 
 export const analyzeTutorFeedback = createServerFn({ method: "POST" })
@@ -81,8 +86,8 @@ export const analyzeTutorFeedback = createServerFn({ method: "POST" })
       const p = JSON.parse(json) as Partial<TutorInsights>;
       return {
         summary: p.summary ?? "",
-        strengths: (p.strengths ?? []).slice(0, 5),
-        improvements: (p.improvements ?? []).slice(0, 5),
+        strengths: norm(p.strengths),
+        improvements: norm(p.improvements),
         discussion_points: (p.discussion_points ?? []).slice(0, 5),
       };
     } catch {
