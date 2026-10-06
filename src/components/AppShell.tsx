@@ -25,6 +25,7 @@ type Ctx = { isStaff: boolean; isMentor: boolean; isAdmin: boolean };
 const NAV: NavItem[] = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard, show: () => true },
   { to: "/tutors", label: "My Tutors", icon: Users, show: (c) => c.isMentor || c.isStaff },
+  { to: "/assignments", label: "Assign Tutors", icon: GraduationCap, show: (c) => c.isStaff },
   { to: "/sessions", label: "Sessions", icon: ClipboardList, show: (c) => c.isMentor || c.isStaff },
   { to: "/feedback/new", label: "New Feedback", icon: PlusCircle, show: (c) => c.isMentor || c.isStaff },
   { to: "/feedback", label: "Feedback", icon: FileText, show: () => true },
