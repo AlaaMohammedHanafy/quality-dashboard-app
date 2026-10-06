@@ -9,9 +9,9 @@ import { Progress } from "@/components/ui/progress";
 export const Route = createFileRoute("/_authenticated/analytics")({
   head: () => ({
     meta: [
-      { title: "Analytics — Quality Dashboard" },
+      { title: "Analytics — iSchool DEMI DECI Quality Dashboard" },
       { name: "description", content: "Average category scores and feedback trends across tutors." },
-      { property: "og:title", content: "Analytics — Quality Dashboard" },
+      { property: "og:title", content: "Analytics — iSchool DEMI DECI Quality Dashboard" },
       { property: "og:description", content: "Average category scores and feedback trends across tutors." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

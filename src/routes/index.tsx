@@ -6,13 +6,13 @@ import { useAuth } from "@/hooks/useAuth";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Quality Dashboard — Tutor & Mentor Feedback System" },
+      { title: "iSchool DEMI DECI Quality Dashboard — Tutor & Mentor Feedback System" },
       {
         name: "description",
         content:
           "Evaluate tutor sessions with standardized feedback, automatic scoring, generated reports and exportable quality data.",
       },
-      { property: "og:title", content: "Quality Dashboard — Tutor & Mentor Feedback System" },
+      { property: "og:title", content: "iSchool DEMI DECI Quality Dashboard — Tutor & Mentor Feedback System" },
       {
         property: "og:description",
         content:
@@ -54,7 +54,7 @@ function Landing() {
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
         <div className="flex items-center gap-2">
           <GraduationCap className="size-6 text-primary" />
-          <span className="font-bold">Quality Dashboard</span>
+          <span className="font-bold">iSchool DEMI DECI Quality Dashboard</span>
         </div>
         {loading ? null : session ? (
           <Button asChild size="sm">

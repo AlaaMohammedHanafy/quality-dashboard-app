@@ -20,9 +20,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 export const Route = createFileRoute("/_authenticated/tutors")({
   head: () => ({
     meta: [
-      { title: "My Tutors — Quality Dashboard" },
+      { title: "My Tutors — iSchool DEMI DECI Quality Dashboard" },
       { name: "description", content: "View your assigned tutors and import tutor lists from a spreadsheet." },
-      { property: "og:title", content: "My Tutors — Quality Dashboard" },
+      { property: "og:title", content: "My Tutors — iSchool DEMI DECI Quality Dashboard" },
       { property: "og:description", content: "View your assigned tutors and import tutor lists from a spreadsheet." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

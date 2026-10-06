@@ -82,7 +82,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Quality Dashboard — Tutor & Mentor Feedback" },
+      { title: "iSchool DEMI DECI Quality Dashboard — Tutor & Mentor Feedback" },
       {
         name: "description",
         content: "Session-based quality feedback, scoring and reporting for tutors and mentors.",

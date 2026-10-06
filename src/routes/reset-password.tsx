@@ -9,10 +9,10 @@ import { Label } from "@/components/ui/label";
 export const Route = createFileRoute("/reset-password")({
   head: () => ({
     meta: [
-      { title: "Reset password — Quality Dashboard" },
-      { name: "description", content: "Choose a new password for your Quality Dashboard account." },
-      { property: "og:title", content: "Reset password — Quality Dashboard" },
-      { property: "og:description", content: "Choose a new password for your Quality Dashboard account." },
+      { title: "Reset password — iSchool DEMI DECI Quality Dashboard" },
+      { name: "description", content: "Choose a new password for your iSchool DEMI DECI Quality Dashboard account." },
+      { property: "og:title", content: "Reset password — iSchool DEMI DECI Quality Dashboard" },
+      { property: "og:description", content: "Choose a new password for your iSchool DEMI DECI Quality Dashboard account." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },

@@ -19,9 +19,9 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
-      { title: "Dashboard — Quality Dashboard" },
+      { title: "Dashboard — iSchool DEMI DECI Quality Dashboard" },
       { name: "description", content: "Quality overview of tutors, mentors and session feedback." },
-      { property: "og:title", content: "Dashboard — Quality Dashboard" },
+      { property: "og:title", content: "Dashboard — iSchool DEMI DECI Quality Dashboard" },
       { property: "og:description", content: "Quality overview of tutors, mentors and sessions." },
     ],
   }),
