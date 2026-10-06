@@ -8,9 +8,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 export const Route = createFileRoute("/_authenticated/sessions")({
   head: () => ({
     meta: [
-      { title: "Sessions — Quality Dashboard" },
+      { title: "Sessions — iSchool DEMI DECI Quality Dashboard" },
       { name: "description", content: "All tutoring sessions and their review status." },
-      { property: "og:title", content: "Sessions — Quality Dashboard" },
+      { property: "og:title", content: "Sessions — iSchool DEMI DECI Quality Dashboard" },
       { property: "og:description", content: "All tutoring sessions and their review status." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

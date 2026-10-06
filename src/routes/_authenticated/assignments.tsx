@@ -17,9 +17,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 export const Route = createFileRoute("/_authenticated/assignments")({
   head: () => ({
     meta: [
-      { title: "Assign Tutors — Quality Dashboard" },
+      { title: "Assign Tutors — iSchool DEMI DECI Quality Dashboard" },
       { name: "description", content: "Assign tutors to mentors by Tutor ID." },
-      { property: "og:title", content: "Assign Tutors — Quality Dashboard" },
+      { property: "og:title", content: "Assign Tutors — iSchool DEMI DECI Quality Dashboard" },
       { property: "og:description", content: "Assign tutors to mentors by Tutor ID." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

@@ -13,9 +13,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in — Quality Dashboard" },
+      { title: "Sign in — iSchool DEMI DECI Quality Dashboard" },
       { name: "description", content: "Sign in to the tutor and mentor quality dashboard." },
-      { property: "og:title", content: "Sign in — Quality Dashboard" },
+      { property: "og:title", content: "Sign in — iSchool DEMI DECI Quality Dashboard" },
       { property: "og:description", content: "Access your quality feedback dashboard." },
     ],
   }),
@@ -87,7 +87,7 @@ function AuthPage() {
         <div className="mb-6 flex items-center gap-2">
           <GraduationCap className="size-6 text-primary" />
           <div>
-            <p className="font-bold">Quality Dashboard</p>
+            <p className="font-bold">iSchool DEMI DECI Quality Dashboard</p>
             <p className="text-xs text-muted-foreground">Tutor & Mentor Feedback</p>
           </div>
         </div>

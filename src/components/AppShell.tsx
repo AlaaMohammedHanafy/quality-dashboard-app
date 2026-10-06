@@ -14,6 +14,7 @@ import {
   Users,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import ischoolLogo from "@/assets/ischool-logo.png";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -56,11 +57,11 @@ export function AppShell({ title, children }: { title: string; children: ReactNo
   return (
     <div className="flex min-h-screen bg-background">
       <aside className="hidden w-64 shrink-0 flex-col bg-sidebar px-4 py-6 text-sidebar-foreground md:flex">
-        <div className="mb-8 flex items-center gap-2 px-2">
-          <GraduationCap className="size-6 text-sidebar-primary" />
-          <div>
-            <p className="text-sm font-bold leading-tight">Quality Dashboard</p>
-            <p className="text-xs text-sidebar-foreground/60">Tutor & Mentor Feedback</p>
+        <div className="mb-8 flex items-center gap-2.5 px-2">
+          <img src={ischoolLogo} alt="iSchool" className="h-8 w-auto shrink-0" />
+          <div className="min-w-0">
+            <p className="text-sm font-bold leading-tight">DEMI · DECI</p>
+            <p className="text-xs font-semibold text-sidebar-primary">Quality Dashboard</p>
           </div>
         </div>
         <nav className="flex flex-1 flex-col gap-1">

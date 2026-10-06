@@ -14,9 +14,9 @@ import { Label } from "@/components/ui/label";
 export const Route = createFileRoute("/_authenticated/settings")({
   head: () => ({
     meta: [
-      { title: "Settings — Quality Dashboard" },
+      { title: "Settings — iSchool DEMI DECI Quality Dashboard" },
       { name: "description", content: "Configure scoring weights for feedback categories." },
-      { property: "og:title", content: "Settings — Quality Dashboard" },
+      { property: "og:title", content: "Settings — iSchool DEMI DECI Quality Dashboard" },
       { property: "og:description", content: "Configure scoring weights for feedback categories." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

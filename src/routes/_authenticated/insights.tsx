@@ -17,9 +17,9 @@ import { Label } from "@/components/ui/label";
 export const Route = createFileRoute("/_authenticated/insights")({
   head: () => ({
     meta: [
-      { title: "AI tutor insights — Quality Dashboard" },
+      { title: "AI tutor insights — iSchool DEMI DECI Quality Dashboard" },
       { name: "description", content: "Find recurring strengths, improvement areas and discussion points from a tutor's feedback." },
-      { property: "og:title", content: "AI tutor insights — Quality Dashboard" },
+      { property: "og:title", content: "AI tutor insights — iSchool DEMI DECI Quality Dashboard" },
       { property: "og:description", content: "Find recurring strengths, improvement areas and discussion points from a tutor's feedback." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

@@ -20,9 +20,9 @@ import {
 export const Route = createFileRoute("/_authenticated/feedback/")({
   head: () => ({
     meta: [
-      { title: "Feedback records — Quality Dashboard" },
+      { title: "Feedback records — iSchool DEMI DECI Quality Dashboard" },
       { name: "description", content: "Filter, review and export session feedback records." },
-      { property: "og:title", content: "Feedback records — Quality Dashboard" },
+      { property: "og:title", content: "Feedback records — iSchool DEMI DECI Quality Dashboard" },
       { property: "og:description", content: "Filter, review and export session feedback." },
     ],
   }),

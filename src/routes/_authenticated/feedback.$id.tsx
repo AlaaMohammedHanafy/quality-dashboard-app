@@ -13,9 +13,9 @@ import { Badge } from "@/components/ui/badge";
 export const Route = createFileRoute("/_authenticated/feedback/$id")({
   head: () => ({
     meta: [
-      { title: "Feedback Report — Quality Dashboard" },
+      { title: "Feedback Report — iSchool DEMI DECI Quality Dashboard" },
       { name: "description", content: "Detailed session feedback report with category scores." },
-      { property: "og:title", content: "Feedback Report — Quality Dashboard" },
+      { property: "og:title", content: "Feedback Report — iSchool DEMI DECI Quality Dashboard" },
       { property: "og:description", content: "Detailed session feedback report with category scores." },
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary" },
