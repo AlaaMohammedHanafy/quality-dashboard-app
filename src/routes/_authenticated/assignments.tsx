@@ -108,13 +108,12 @@ function AssignmentsPage() {
   );
 
   if (!isStaff) {
-    return <AppShell><p className="text-muted-foreground">Only admins and team leaders can assign tutors.</p></AppShell>;
+    return <AppShell title="Assign Tutors"><p className="text-muted-foreground">Only admins and team leaders can assign tutors.</p></AppShell>;
   }
 
   return (
-    <AppShell>
+    <AppShell title="Assign Tutors">
       <div className="space-y-6">
-        <h1 className="text-2xl font-semibold">Assign Tutors</h1>
         <Card>
           <CardHeader><CardTitle>New assignment</CardTitle></CardHeader>
           <CardContent>
