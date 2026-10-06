@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { BarChart3, CheckCircle2, ClipboardList, FileSpreadsheet, GraduationCap } from "lucide-react";
+import { BarChart3, CheckCircle2, ClipboardList, FileSpreadsheet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
+import ischoolLogo from "@/assets/ischool-logo.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -52,9 +53,11 @@ function Landing() {
   return (
     <div className="min-h-screen bg-background">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
-        <div className="flex items-center gap-2">
-          <GraduationCap className="size-6 text-primary" />
-          <span className="font-bold">iSchool DEMI DECI Quality Dashboard</span>
+        <div className="flex items-center gap-2.5">
+          <img src={ischoolLogo} alt="iSchool" className="h-9 w-auto" />
+          <span className="hidden border-l border-border pl-2.5 text-sm font-semibold sm:inline">
+            DEMI · DECI Quality Dashboard
+          </span>
         </div>
         {loading ? null : session ? (
           <Button asChild size="sm">
