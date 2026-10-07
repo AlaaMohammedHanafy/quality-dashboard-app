@@ -72,10 +72,10 @@ function Landing() {
 
       <section className="mx-auto max-w-6xl px-6 py-16 text-center">
         <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-          Quality management
+          iSchool DEMI · DECI Quality Dashboard
         </p>
         <h1 className="mt-4 text-4xl font-extrabold tracking-tight md:text-6xl">
-          Session quality feedback for tutors and mentors
+          Today's Generation, Tomorrow's Tech Leaders
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-base text-muted-foreground md:text-lg">
           Mentors evaluate assigned tutors with predefined checkboxes. Scores, reports and exports
