@@ -1,8 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { GraduationCap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import ischoolLogo from "@/assets/ischool-logo-dark.png";
 import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -84,10 +84,10 @@ function AuthPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-secondary px-4 py-10">
       <div className="w-full max-w-md rounded-2xl border bg-card p-8 shadow-sm">
-        <div className="mb-6 flex items-center gap-2">
-          <GraduationCap className="size-6 text-primary" />
+        <div className="mb-6 flex items-center gap-3">
+          <img src={ischoolLogo} alt="iSchool" className="h-8 w-auto" />
           <div>
-            <p className="font-bold">iSchool DEMI DECI Quality Dashboard</p>
+            <p className="font-bold">DEMI · DECI Quality Dashboard</p>
             <p className="text-xs text-muted-foreground">Tutor & Mentor Feedback</p>
           </div>
         </div>

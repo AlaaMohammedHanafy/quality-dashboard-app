@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { BarChart3, CheckCircle2, ClipboardList, FileSpreadsheet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import ischoolLogo from "@/assets/ischool-logo.png";
+import ischoolLogo from "@/assets/ischool-logo-dark.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
