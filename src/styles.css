@@ -8,7 +8,8 @@
  * Design system definition (iSchool brand palette).
  * All colors use oklch. Brand hex reference:
  *  blue #056FEC · orange #FF7F1C · yellow #FFD700 · green #0FB940
- *  info #05ACFF · navy #043FAD · bg #F5F8FC · text #172B4D · muted #64748B · border #E2E8F0
+ *  light blue #05ACFF · dark blue #043FAD
+ *  bg #F5F8FC · text #172B4D · muted #64748B · border #E2E8F0
  */
 
 @theme inline {
@@ -88,7 +89,7 @@
   --secondary-foreground: oklch(0.415 0.184 261.9);
   --muted: oklch(0.958 0.01 255.5);
   --muted-foreground: oklch(0.554 0.041 257.4);    /* #64748B */
-  --accent: oklch(0.94 0.04 258);                  /* light primary tint for hovers */
+  --accent: oklch(0.94 0.04 258);                  /* light blue tint for hovers */
   --accent-foreground: oklch(0.415 0.184 261.9);
   --border: oklch(0.929 0.013 255.5);              /* #E2E8F0 */
   --input: oklch(0.929 0.013 255.5);
@@ -106,16 +107,17 @@
   --chart-4: oklch(0.712 0.166 241.3);
   --chart-5: oklch(0.415 0.184 261.9);
 
-  /* Sidebar: dark navy with primary/orange accents */
-  --sidebar: oklch(0.415 0.184 261.9);
+  /* Sidebar: dark blue with orange active accent */
+  --sidebar: oklch(0.415 0.184 261.9);             /* #043FAD */
   --sidebar-foreground: oklch(0.97 0.01 255);
   --sidebar-primary: oklch(0.731 0.183 50.8);
   --sidebar-primary-foreground: oklch(0.2 0.05 260);
-  --sidebar-accent: oklch(0.45 0.17 261);
+  --sidebar-accent: oklch(0.48 0.18 261);
   --sidebar-accent-foreground: oklch(1 0 0);
-  --sidebar-border: oklch(0.45 0.12 261);
+  --sidebar-border: oklch(0.48 0.13 261);
   --sidebar-ring: oklch(0.887 0.182 95.3);
 
+  /* Shadows */
   --shadow-card: 0 1px 2px oklch(0.292 0.068 260 / 6%), 0 2px 8px oklch(0.292 0.068 260 / 5%);
   --shadow-pop: 0 8px 24px oklch(0.292 0.068 260 / 12%);
 
