@@ -14,7 +14,7 @@ import {
   Users,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import ischoolLogo from "@/assets/ischool-logo.png";
+import ischoolLogo from "@/assets/ischool-logo.svg";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -57,9 +57,11 @@ export function AppShell({ title, children }: { title: string; children: ReactNo
   return (
     <div className="flex min-h-screen bg-background">
       <aside className="hidden w-64 shrink-0 flex-col bg-sidebar px-4 py-6 text-sidebar-foreground md:flex">
-        <div className="mb-8 flex items-center gap-2.5 px-2">
-          <img src={ischoolLogo} alt="iSchool" className="h-8 w-auto shrink-0" />
-          <div className="min-w-0">
+        <div className="mb-8 px-2">
+          <div className="rounded-xl bg-white px-3 py-2.5">
+            <img src={ischoolLogo} alt="iSchool" className="h-9 w-auto max-w-full" />
+          </div>
+          <div className="mt-3 min-w-0">
             <p className="text-sm font-bold leading-tight">DEMI · DECI</p>
             <p className="text-xs font-semibold text-sidebar-primary">Quality Dashboard</p>
           </div>
@@ -100,7 +102,10 @@ export function AppShell({ title, children }: { title: string; children: ReactNo
 
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex items-center justify-between border-b bg-card px-4 py-4 md:px-8">
-          <h1 className="text-lg font-bold tracking-tight md:text-xl">{title}</h1>
+          <div className="flex min-w-0 items-center gap-3">
+            <img src={ischoolLogo} alt="iSchool" className="h-7 w-auto shrink-0 md:hidden" />
+            <h1 className="truncate text-lg font-bold tracking-tight md:text-xl">{title}</h1>
+          </div>
           <div className="flex items-center gap-2">
             <AlertsBell />
             <Button variant="outline" size="sm" className="md:hidden" onClick={signOut}>
