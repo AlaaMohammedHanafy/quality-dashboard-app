@@ -8,7 +8,7 @@
  * Design system definition (iSchool brand palette).
  * All colors use oklch. Brand hex reference:
  *  blue #056FEC · orange #FF7F1C · yellow #FFD700 · green #0FB940
- *  info #05ACFF · navy #033796 · bg #F5F8FC · text #172B4D · muted #64748B · border #E2E8F0
+ *  info #05ACFF · navy #043FAD · bg #F5F8FC · text #172B4D · muted #64748B · border #E2E8F0
  */
 
 @theme inline {
@@ -80,16 +80,16 @@
   --primary-foreground: oklch(1 0 0);
   --brand-orange: oklch(0.731 0.183 50.8);         /* #FF7F1C */
   --brand-yellow: oklch(0.887 0.182 95.3);         /* #FFD700 */
-  --brand-navy: oklch(0.376 0.164 261.6);          /* #033796 */
+  --brand-navy: oklch(0.415 0.184 261.9);          /* #043FAD */
   --info: oklch(0.712 0.166 241.3);                /* #05ACFF */
 
   /* Neutrals */
   --secondary: oklch(0.955 0.015 255.5);
-  --secondary-foreground: oklch(0.376 0.164 261.6);
+  --secondary-foreground: oklch(0.415 0.184 261.9);
   --muted: oklch(0.958 0.01 255.5);
   --muted-foreground: oklch(0.554 0.041 257.4);    /* #64748B */
   --accent: oklch(0.94 0.04 258);                  /* light primary tint for hovers */
-  --accent-foreground: oklch(0.376 0.164 261.6);
+  --accent-foreground: oklch(0.415 0.184 261.9);
   --border: oklch(0.929 0.013 255.5);              /* #E2E8F0 */
   --input: oklch(0.929 0.013 255.5);
   --ring: oklch(0.566 0.207 258);
@@ -104,10 +104,10 @@
   --chart-2: oklch(0.685 0.205 146.2);
   --chart-3: oklch(0.731 0.183 50.8);
   --chart-4: oklch(0.712 0.166 241.3);
-  --chart-5: oklch(0.376 0.164 261.6);
+  --chart-5: oklch(0.415 0.184 261.9);
 
   /* Sidebar: dark navy with primary/orange accents */
-  --sidebar: oklch(0.376 0.164 261.6);
+  --sidebar: oklch(0.415 0.184 261.9);
   --sidebar-foreground: oklch(0.97 0.01 255);
   --sidebar-primary: oklch(0.731 0.183 50.8);
   --sidebar-primary-foreground: oklch(0.2 0.05 260);
