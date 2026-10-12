@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { BarChart3, CheckCircle2, ClipboardList, FileSpreadsheet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import ischoolLogo from "@/assets/ischool-logo-dark.png";
+import ischoolLogo from "@/assets/ischool-logo.svg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -53,9 +53,9 @@ function Landing() {
   return (
     <div className="min-h-screen bg-background">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
-        <div className="flex items-center gap-2.5">
-          <img src={ischoolLogo} alt="iSchool" className="h-9 w-auto" />
-          <span className="hidden border-l border-border pl-2.5 text-sm font-semibold sm:inline">
+        <div className="flex items-center gap-3">
+          <img src={ischoolLogo} alt="iSchool" className="h-10 w-auto shrink-0" />
+          <span className="hidden border-l border-border pl-3 text-sm font-semibold sm:inline">
             DEMI · DECI Quality Dashboard
           </span>
         </div>
@@ -92,7 +92,7 @@ function Landing() {
 
       <section className="mx-auto grid max-w-6xl gap-4 px-6 pb-20 md:grid-cols-2">
         {FEATURES.map((feature) => (
-          <div key={feature.title} className="rounded-xl border bg-card p-6">
+          <div key={feature.title} className="rounded-xl border bg-card p-6 shadow-card">
             <feature.icon className="size-5 text-primary" />
             <h2 className="mt-3 font-semibold">{feature.title}</h2>
             <p className="mt-1 text-sm text-muted-foreground">{feature.text}</p>
